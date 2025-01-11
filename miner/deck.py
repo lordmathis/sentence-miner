@@ -1,11 +1,28 @@
 import random
 import genanki
 
-from typing import Dict, Tuple
+from typing import Dict
 
-decks: Dict[str, genanki.Deck] = {}
 
-model = genanki.Model(
+class Deck:
+
+    anki_deck: genanki.Deck
+    src_lang: str
+    target_lang: str
+
+    def __init__(self, deck_id, name, src_lang, target_lang):
+        self.anki_deck = genanki.Deck(deck_id, name)
+
+        self.src_lang = src_lang
+        self.target_lang = target_lang
+
+    def to_json(self):
+        return self.anki_deck.to_json()
+
+
+_decks: Dict[str, Deck] = {}
+
+_model = genanki.Model(
     1874360843,
     "Sentence Mining Model",
     fields=[
@@ -35,27 +52,33 @@ class AudioNote(genanki.Note):
     def guid(self):
         return genanki.guid_for(self.fields["src"], self.fields["target"])
 
-def gen_deck_id():
+
+def gen_rand_deck_id():
     return random.randrange(1 << 30, 1 << 31)
 
-def create_deck(deck_id, name) -> genanki.Deck:
 
-    if name in decks:
+def create_deck(deck_id, name, src_lang, target_lang) -> Deck:
+
+    if name in _decks:
         raise ValueError(f"Deck with the name {name} already exists")
 
-    deck = genanki.Deck(deck_id, name)
-    decks[name] = deck
+    deck = Deck(deck_id, name, src_lang, target_lang)
+
+    _decks[name] = deck
 
     return deck
 
-def get_deck(name):
-    if name not in decks:
+
+def get_deck(name) -> Deck:
+    if name not in _decks:
         raise ValueError(f"Deck with the name {name} does not exists")
 
-    return decks[name]
+    return _decks[name]
+
 
 def get_deck_names():
-    return decks.keys
-    
+    return _decks.keys
+
+
 def add_note():
     pass

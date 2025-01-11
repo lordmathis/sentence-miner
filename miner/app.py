@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from deck import create_deck, get_deck_names, gen_deck_id
+from deck import create_deck, get_deck_names, gen_rand_deck_id
 
 app = Flask(__name__)
 
@@ -15,7 +15,7 @@ def create():
     
     try:
         deck_name = request.form.get()
-        deck_id = gen_deck_id()
+        deck_id = gen_rand_deck_id()
 
         deck = create_deck(deck_id, deck_name)        
         return deck.to_json()
