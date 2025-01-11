@@ -4,17 +4,17 @@
 <div>
     <form hx-post="/create" hx-target="#response">
         <label for="select-src-lang">Select source language</label>
-        <select name="source lang" id="select-src-lang">
+        <select name="source-lang" id="select-src-lang">
             <option value="de">German</option>
             <option value="en">English</option>
         </select>
         <label for="select-target-lang">Select target language</label>
-        <select name="target lang" id="select-target-lang">
+        <select name="target-lang" id="select-target-lang">
             <option value="de">German</option>
             <option value="en">English</option>
         </select>
-        <label for="deck-id">Deck ID</label>
-        <input type="text" id="deck-id">
+        <label for="deck-name">Deck Name</label>
+        <input type="text" id="deck-name" name="deck-name">
         <input type="submit" value="Submit">
     </form>
 

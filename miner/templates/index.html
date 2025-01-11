@@ -3,6 +3,11 @@
 {% block content %}
 <div>
     <button>Open Deck</button>
+    <select id="decks" name="Select Deck">
+        {% for o in deck_list %}
+            <option value="o">o</option>
+        {% endfor %}
+    </select>
     <a href="/create">Create New Deck</a>
 </div>
 

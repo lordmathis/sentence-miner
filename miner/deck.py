@@ -1,8 +1,9 @@
+import random
 import genanki
 
-from typing import Dict
+from typing import Dict, Tuple
 
-decks: Dict[int, genanki.Deck] = {}
+decks: Dict[str, genanki.Deck] = {}
 
 model = genanki.Model(
     1874360843,
@@ -34,10 +35,27 @@ class AudioNote(genanki.Note):
     def guid(self):
         return genanki.guid_for(self.fields["src"], self.fields["target"])
 
+def gen_deck_id():
+    return random.randrange(1 << 30, 1 << 31)
 
-def create_deck(deck_id, name):
+def create_deck(deck_id, name) -> genanki.Deck:
+
+    if name in decks:
+        raise ValueError(f"Deck with the name {name} already exists")
+
     deck = genanki.Deck(deck_id, name)
-    decks[deck_id] = deck
+    decks[name] = deck
 
+    return deck
+
+def get_deck(name):
+    if name not in decks:
+        raise ValueError(f"Deck with the name {name} does not exists")
+
+    return decks[name]
+
+def get_deck_names():
+    return decks.keys
+    
 def add_note():
     pass
