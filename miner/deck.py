@@ -77,7 +77,7 @@ def get_deck(name) -> Deck:
 
 
 def get_deck_names():
-    return _decks.keys
+    return list(_decks.keys())
 
 
 def add_note():

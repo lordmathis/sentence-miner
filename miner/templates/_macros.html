@@ -1,0 +1,6 @@
+<!-- templates/_macros.html -->
+{% macro language_options(languages) %}
+    {% for code, name in languages.items() %}
+        <option value="{{ code }}">{{ name }}</option>
+    {% endfor %}
+{% endmacro %}
