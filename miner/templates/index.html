@@ -3,16 +3,21 @@
 {% block content %}
 <div class="bg-white rounded-lg shadow-md p-6">
     <div class="flex items-center gap-4 flex-wrap">
-        <button class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors">
-            Open Deck
-        </button>
+
+        <form action="/edit" method="get">
         
-        <select id="decks" name="Select Deck" 
-                class="block w-48 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-            {% for o in deck_list %}
-                <option value=o>{{o}}</option>
-            {% endfor %}
-        </select>
+            <select id="decks" name="selected-deck"
+                    class="block w-48 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                {% for d in decks %}
+                    <option value="{{ d.deck_id }}">{{ d.name }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors">
+                Edit Deck
+            </button>
+
+        </form>
         
         <a href="/create" 
            class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">

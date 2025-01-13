@@ -1,7 +1,7 @@
 import random
 import genanki
 
-from typing import Dict
+from typing import Dict, List
 
 
 class Deck:
@@ -15,12 +15,17 @@ class Deck:
 
         self.src_lang = src_lang
         self.target_lang = target_lang
+    
+    @property
+    def name(self):
+        return self.anki_deck.name
+    
+    @property
+    def deck_id(self):
+        return self.anki_deck.deck_id
 
-    def to_json(self):
-        return self.anki_deck.to_json()
 
-
-_decks: Dict[str, Deck] = {}
+_decks: Dict[int, Deck] = {}
 
 _model = genanki.Model(
     1874360843,
@@ -64,20 +69,20 @@ def create_deck(deck_id, name, src_lang, target_lang) -> Deck:
 
     deck = Deck(deck_id, name, src_lang, target_lang)
 
-    _decks[name] = deck
+    _decks[deck_id] = deck
 
     return deck
 
 
-def get_deck(name) -> Deck:
-    if name not in _decks:
-        raise ValueError(f"Deck with the name {name} does not exists")
+def get_deck(deck_id) -> Deck:
+    if deck_id not in _decks:
+        raise ValueError(f"Deck not found")
 
-    return _decks[name]
+    return _decks[deck_id]
 
 
-def get_deck_names():
-    return list(_decks.keys())
+def get_decks() -> List[Deck]:
+    return list(_decks.values())
 
 
 def add_note():

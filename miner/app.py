@@ -1,13 +1,13 @@
 from flask import Flask, render_template, request
-from miner.deck import create_deck, get_deck_names, gen_rand_deck_id
+from miner.deck import create_deck, get_deck, get_decks, gen_rand_deck_id
 from miner.translate import get_translate_languages
 
 app = Flask(__name__)
 
 @app.route("/")
 def index():
-    deck_list = get_deck_names()
-    return render_template("index.html", deck_list=deck_list)
+    decks = get_decks()
+    return render_template("index.html", decks=decks)
 
 @app.route("/create", methods=['GET', 'POST'])
 def create():
@@ -23,15 +23,21 @@ def create():
         src_lang = request.form.get("source-lang")
         target_lang = request.form.get("target-lang")
 
-        deck = create_deck(deck_id, deck_name, src_lang, target_lang)        
-        return deck.to_json()
+        deck = create_deck(deck_id, deck_name, src_lang, target_lang)
+        return render_template("edit.html", selected_deck=deck.name)
         
-    except ValueError as e:
+    except ValueError:
         return "Deck name exists", 400
 
 @app.route("/edit")
-def edit():
-    pass
+def edit(deck_id):
+
+    try:
+        deck = get_deck(deck_id)
+        return render_template("edit.html", selected_deck=deck.name)
+
+    except ValueError:
+        return "Deck not found", 404
    
 
 if __name__ == '__main__':
