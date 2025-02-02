@@ -6,7 +6,7 @@
 
         <form action="/edit" method="get">
         
-            <select id="decks" name="selected-deck"
+            <select id="decks" name="deck-id" required
                     class="block w-48 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                 {% for d in decks %}
                     <option value="{{ d.deck_id }}">{{ d.name }}</option>

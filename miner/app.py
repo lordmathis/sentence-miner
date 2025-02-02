@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, redirect, render_template, request
 from miner.deck import create_deck, get_deck, get_decks, gen_rand_deck_id
 from miner.translate import get_translate_languages
 
@@ -24,13 +24,19 @@ def create():
         target_lang = request.form.get("target-lang")
 
         deck = create_deck(deck_id, deck_name, src_lang, target_lang)
-        return render_template("edit.html", selected_deck=deck.name)
+        return redirect(f"/edit?deck-id={deck.deck_id}")
+        # return render_template("edit.html", selected_deck=deck.name)
         
     except ValueError:
         return "Deck name exists", 400
 
 @app.route("/edit")
-def edit(deck_id):
+def edit():
+
+    try:
+        deck_id = int(request.args.get('deck-id'))
+    except ValueError:
+        return "Deck id required", 400
 
     try:
         deck = get_deck(deck_id)
