@@ -2,12 +2,13 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="bg-white rounded-lg shadow-md p-6">
-    <h2 class="text-2xl font-semibold text-gray-800 mb-6">Edit Deck</h2>
+    <h2 class="text-2xl font-semibold text-gray-800 mb-6">Edit Deck - {{ deck_name }}</h2>
     
     <div class="space-y-6">
-        <form hx-post="/deck/{{ deck_id }}/add-note" 
+        <form hx-post="/add?deck-id={{ deck_id }}" 
               hx-target="#notes-list"
               hx-swap="afterbegin"
+              hx-on::after-request="if(event.detail.successful) this.reset()"
               class="space-y-4">
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>

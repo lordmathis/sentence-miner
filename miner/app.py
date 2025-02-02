@@ -40,11 +40,31 @@ def edit():
 
     try:
         deck = get_deck(deck_id)
-        return render_template("edit.html", selected_deck=deck.name)
+        return render_template("edit.html", deck_name=deck.name, deck_id=deck.deck_id)
 
     except ValueError:
         return "Deck not found", 404
-   
+
+@app.route("/add", methods=["POST"])
+def add():
+
+    try:
+        deck_id = int(request.args.get('deck-id'))
+    except ValueError:
+        return "Deck id required", 400
+    
+    try:
+        deck = get_deck(deck_id)
+
+        front = request.form.get("front")
+        back = request.form.get("back")
+
+        deck.add_note(front, back)
+
+        return render_template("note.html", front=front, back=back)
+
+    except ValueError:
+        return "Deck not found", 404
 
 if __name__ == '__main__':
     app.run("0.0.0.0", 8000, debug=True)

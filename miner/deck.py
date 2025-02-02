@@ -3,30 +3,6 @@ import genanki
 
 from typing import Dict, List
 
-
-class Deck:
-
-    anki_deck: genanki.Deck
-    src_lang: str
-    target_lang: str
-
-    def __init__(self, deck_id, name, src_lang, target_lang):
-        self.anki_deck = genanki.Deck(deck_id, name)
-
-        self.src_lang = src_lang
-        self.target_lang = target_lang
-    
-    @property
-    def name(self):
-        return self.anki_deck.name
-    
-    @property
-    def deck_id(self):
-        return self.anki_deck.deck_id
-
-
-_decks: Dict[int, Deck] = {}
-
 _model = genanki.Model(
     1874360843,
     "Sentence Mining Model",
@@ -51,11 +27,41 @@ _model = genanki.Model(
     ],
 )
 
-
 class AudioNote(genanki.Note):
     @property
     def guid(self):
         return genanki.guid_for(self.fields["src"], self.fields["target"])
+
+class Deck:
+
+    anki_deck: genanki.Deck
+    src_lang: str
+    target_lang: str
+
+    def __init__(self, deck_id, name, src_lang, target_lang):
+        self.anki_deck = genanki.Deck(deck_id, name)
+
+        self.src_lang = src_lang
+        self.target_lang = target_lang
+    
+    @property
+    def name(self):
+        return self.anki_deck.name
+    
+    @property
+    def deck_id(self):
+        return self.anki_deck.deck_id
+    
+    def add_note(self, front, back):
+
+        note = AudioNote(
+            model=_model,
+            fields=[front, None, back, None, '']
+        )
+
+        self.anki_deck.add_note(note)
+
+_decks: Dict[int, Deck] = {}
 
 
 def gen_rand_deck_id():
@@ -83,7 +89,3 @@ def get_deck(deck_id) -> Deck:
 
 def get_decks() -> List[Deck]:
     return list(_decks.values())
-
-
-def add_note():
-    pass
